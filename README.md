@@ -1,7 +1,7 @@
-NLog.Extensions.AzureTableStorage
+NLog Extensions Azure Table Storage
 =================================
 
 Azure Table Storage Target for NLog
 
-For more info about what is a Target and how to use it:
+For more info about NLog targets and how to use it:
 https://github.com/nlog/NLog/wiki/How%20to%20write%20a%20Target
