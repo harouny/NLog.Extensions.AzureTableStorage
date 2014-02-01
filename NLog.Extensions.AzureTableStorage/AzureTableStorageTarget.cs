@@ -29,7 +29,8 @@ namespace NLog.Extensions.AzureTableStorage
 
         protected override void Write(LogEventInfo logEvent)
         {
-            _tableStorageManager.Add(new LogEntity(logEvent));
+            var layoutMessage = Layout.Render(logEvent);
+            _tableStorageManager.Add(new LogEntity(logEvent, layoutMessage));
         }
 
     }

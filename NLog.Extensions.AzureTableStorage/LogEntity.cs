@@ -10,12 +10,13 @@ namespace NLog.Extensions.AzureTableStorage
 {
     public class LogEntity : TableEntity
     {
-        public LogEntity(LogEventInfo logEvent)
+        public LogEntity(LogEventInfo logEvent, string layoutMessage)
         {
             LoggerName = logEvent.LoggerName;
             LogTimeStamp = logEvent.TimeStamp.ToString(CultureInfo.InvariantCulture);
             Level = logEvent.Level.Name;
             Message = logEvent.FormattedMessage;
+            LayoutMessage = layoutMessage;
             if (logEvent.Exception != null)
             {
                 Exception = logEvent.Exception.ToString();
@@ -51,5 +52,6 @@ namespace NLog.Extensions.AzureTableStorage
         public string InnerException { get; set; }
         public string Parameters { get; set; }
         public string StackTrace { get; set; }
+        public string LayoutMessage { get; set; }
     }
 }
