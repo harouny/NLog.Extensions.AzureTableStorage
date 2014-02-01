@@ -56,6 +56,28 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         }
 
 
+        [Fact]
+        public void IncludeExeptionDetailsInLoggedRow()
+        {
+            _logger.LogException(LogLevel.Error, "execption messege", new NullReferenceException());
+            var entity = GetLogEntities().Single();
+            Assert.NotNull(entity.Exception);
+            Assert.True(entity.Exception.Contains(typeof(NullReferenceException).ToString()));
+        }
+
+
+
+        [Fact]
+        public void IncludeArgumentsInLoggedRow()
+        {
+            _logger.Log(LogLevel.Debug, "debug messege", 5);
+            var entity = GetLogEntities().Single();
+            Assert.NotNull(entity.Parameters);
+            Assert.Equal("5", entity.Parameters);
+        }
+
+
+
         private string GetStorageAccountConnectionString()
         {
             return CloudConfigurationManager.GetSetting("StorageAccountConnectionString");
@@ -66,7 +88,6 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             return storageAccount;
         }
-
         private List<LogEntity> GetLogEntities()
         {
             // Construct the query operation for all customer entities where PartitionKey="Smith".
@@ -75,8 +96,6 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             var entities = _cloudTable.ExecuteQuery(query);
             return entities.ToList();
         }
-
-
         public void Dispose()
         {
             _cloudTable.DeleteIfExists();
