@@ -10,15 +10,27 @@ using System.Threading.Tasks;
 namespace NLog.Extensions.AzureTableStorage
 {
     [Target("AzureTableStorage")]
-    public class AzureTableStorageTarget : TargetWithLayout 
+    public class AzureTableStorageTarget : TargetWithLayout
     {
+        private TableStorageManager _tableStorageManager;
+        
         [Required] 
-        public string ConnectionString { get; set; }
+        public string ConnectionStringKey { get; set; }
+        
+        [Required]
+        public string TableName { get; set; }
+
+
+        protected override void InitializeTarget()
+        {
+            base.InitializeTarget();
+            _tableStorageManager = new TableStorageManager(ConnectionStringKey, TableName);
+        }
 
         protected override void Write(LogEventInfo logEvent)
         {
-           //TODO: do the writing to table storage
-           
+            _tableStorageManager.Add(new LogEntity(logEvent));
         }
+
     }
 }

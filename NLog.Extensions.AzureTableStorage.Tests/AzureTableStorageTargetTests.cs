@@ -17,8 +17,8 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
         public AzureTableStorageTargetTests()
         {
-            var storageAccount = GetStorageAccount();
             Sut = new Sut(LogManager.GetLogger(typeof(Sut).ToString()));
+            var storageAccount = GetStorageAccount();
             // Create the table client.
             var tableClient = storageAccount.CreateCloudTableClient();
             //create charts table if not exists.
@@ -30,7 +30,13 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         [Fact]
         public void Test()
         {
+            Assert.True(GetLogEntities().Count == 0);
             Sut.Operation();
+            var entities = GetLogEntities();
+            Assert.True(entities.Count == 1);
+            Assert.Equal("information", entities.Single().Message);
+            Assert.Equal("Info", entities.Single().Level);
+
         }
 
 
@@ -38,13 +44,22 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         {
             return CloudConfigurationManager.GetSetting("StorageAccountConnectionString");
         }
-
         private CloudStorageAccount GetStorageAccount()
         {
             var connectionString = GetStorageAccountConnectionString();
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             return storageAccount;
         }
+
+        private List<LogEntity> GetLogEntities()
+        {
+            // Construct the query operation for all customer entities where PartitionKey="Smith".
+            var query = new TableQuery<LogEntity>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, typeof(Sut).ToString()));
+            var entities = _cloudTable.ExecuteQuery(query);
+            return entities.ToList();
+        }
+
 
         public void Dispose()
         {
