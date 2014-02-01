@@ -67,7 +67,6 @@
   <ItemGroup>
     <Compile Include="AzureTableStorageTargetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sut.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog.config">

@@ -12,12 +12,12 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 {
     public class AzureTableStorageTargetTests : IDisposable
     {
-        protected Sut Sut;
+        private readonly Logger _logger;
         private readonly CloudTable _cloudTable;
 
         public AzureTableStorageTargetTests()
         {
-            Sut = new Sut(LogManager.GetLogger(typeof(Sut).ToString()));
+            _logger = LogManager.GetLogger(GetType().ToString());
             var storageAccount = GetStorageAccount();
             // Create the table client.
             var tableClient = storageAccount.CreateCloudTableClient();
@@ -28,15 +28,31 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         
 
         [Fact]
-        public void Test()
+        public void CanLogInformation()
         {
             Assert.True(GetLogEntities().Count == 0);
-            Sut.Operation();
+            _logger.Log(LogLevel.Info, "information");
             var entities = GetLogEntities();
+            var entity = entities.Single();
             Assert.True(entities.Count == 1);
-            Assert.Equal("information", entities.Single().Message);
-            Assert.Equal("Info", entities.Single().Level);
+            Assert.Equal("information", entity.Message);
+            Assert.Equal("Info", entity.Level);
+            Assert.Equal(GetType().ToString(), entity.LoggerName);
+        }
 
+
+        [Fact]
+        public void CanLogExeptions()
+        {
+            Assert.True(GetLogEntities().Count == 0);
+            _logger.LogException(LogLevel.Error, "execption messege", new NullReferenceException() );
+            var entities = GetLogEntities();
+            var entity = entities.Single();
+            Assert.True(entities.Count == 1);
+            Assert.Equal("execption messege", entity.Message);
+            Assert.Equal("Error", entity.Level);
+            Assert.Equal(GetType().ToString(), entity.LoggerName);
+            Assert.NotNull(entity.Exception);
         }
 
 
@@ -55,7 +71,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         {
             // Construct the query operation for all customer entities where PartitionKey="Smith".
             var query = new TableQuery<LogEntity>()
-                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, typeof(Sut).ToString()));
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, this.GetType().ToString()));
             var entities = _cloudTable.ExecuteQuery(query);
             return entities.ToList();
         }
