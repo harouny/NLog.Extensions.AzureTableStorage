@@ -1,5 +1,5 @@
-NLog Extensions Azure Table Storage
-=================================
+NLog Azure Table Storage Target 
+===============================
 
 Azure Table Storage Target for NLog
 
