@@ -66,12 +66,47 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
         [Fact]
+        public void IncludeInnerExeptionDetailsInLoggedRow()
+        {
+            _logger.LogException(LogLevel.Error, "execption messege", new NullReferenceException("exception messege", new DivideByZeroException()));
+            var entity = GetLogEntities().Single();
+            Assert.NotNull(entity.Exception);
+            Assert.True(entity.Exception.Contains(typeof(NullReferenceException).ToString()));
+            Assert.NotNull(entity.InnerException);
+            Assert.True(entity.InnerException.Contains(typeof(DivideByZeroException).ToString()));
+        }
+
+
+
+        [Fact]
         public void IncludeArgumentsInLoggedRow()
         {
             _logger.Log(LogLevel.Debug, "debug messege", 5);
             var entity = GetLogEntities().Single();
             Assert.NotNull(entity.Parameters);
             Assert.Equal("5", entity.Parameters);
+        }
+
+
+
+        [Fact]
+        public void IncludeMultibleArgumentsInLoggedRow()
+        {
+            _logger.Log(LogLevel.Debug, "debug messege", 5, 4, 5, 5, 6);
+            var entity = GetLogEntities().Single();
+            Assert.NotNull(entity.Parameters);
+            Assert.Equal("5, 4, 5, 5, 6", entity.Parameters);
+        }
+
+
+
+        [Fact]
+        public void IncludeArgumentsWithDifferentTypesInLoggedRow()
+        {
+            _logger.Log(LogLevel.Debug, "debug messege", 5, "Ahmed", false);
+            var entity = GetLogEntities().Single();
+            Assert.NotNull(entity.Parameters);
+            Assert.Equal("5, Ahmed, " + false, entity.Parameters);
         }
 
 

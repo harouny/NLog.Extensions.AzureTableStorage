@@ -25,7 +25,7 @@ namespace NLog.Extensions.AzureTableStorage
             {
                 Parameters = logEvent.Parameters
                 .Select(o => o.ToString())
-                .Aggregate((o, o1) => (o == null ? "Null" : o.ToString(CultureInfo.InvariantCulture)) + " , " + (o1 == null ? "Null" : o1.ToString(CultureInfo.InvariantCulture)));
+                .Aggregate((o, o1) => (o == null ? "Null" : o.ToString(CultureInfo.InvariantCulture)) + ", " + (o1 == null ? "Null" : o1.ToString(CultureInfo.InvariantCulture)));
 
             }
             if (logEvent.StackTrace != null)
