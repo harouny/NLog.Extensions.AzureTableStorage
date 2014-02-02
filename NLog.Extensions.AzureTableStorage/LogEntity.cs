@@ -18,7 +18,7 @@ namespace NLog.Extensions.AzureTableStorage
                 Exception = logEvent.Exception.ToString();
                 if (logEvent.Exception.InnerException != null)
                 {
-                    InnerException = logEvent.Exception.ToString();
+                    InnerException = logEvent.Exception.InnerException.ToString();
                 }
             }
             if (logEvent.Parameters != null)

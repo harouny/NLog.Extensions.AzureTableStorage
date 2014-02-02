@@ -57,10 +57,11 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         [Fact]
         public void IncludeExeptionDetailsInLoggedRow()
         {
-            _logger.LogException(LogLevel.Error, "execption messege", new NullReferenceException());
+            var exception = new NullReferenceException();
+            _logger.LogException(LogLevel.Error, "execption messege", exception);
             var entity = GetLogEntities().Single();
             Assert.NotNull(entity.Exception);
-            Assert.True(entity.Exception.Contains(typeof(NullReferenceException).ToString()));
+            Assert.Equal(exception.ToString().ExceptBlanks(), entity.Exception.ExceptBlanks());
         }
 
 
@@ -68,12 +69,13 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         [Fact]
         public void IncludeInnerExeptionDetailsInLoggedRow()
         {
-            _logger.LogException(LogLevel.Error, "execption messege", new NullReferenceException("exception messege", new DivideByZeroException()));
+            var exception = new NullReferenceException("exception messege", new DivideByZeroException());
+            _logger.LogException(LogLevel.Error, "execption messege", exception);
             var entity = GetLogEntities().Single();
             Assert.NotNull(entity.Exception);
-            Assert.True(entity.Exception.Contains(typeof(NullReferenceException).ToString()));
+            Assert.Equal(exception.ToString().ExceptBlanks(), entity.Exception.ExceptBlanks());
             Assert.NotNull(entity.InnerException);
-            Assert.True(entity.InnerException.Contains(typeof(DivideByZeroException).ToString()));
+            Assert.Equal(exception.InnerException.ToString().ExceptBlanks(), entity.InnerException.ExceptBlanks());
         }
 
 
