@@ -12,20 +12,29 @@ namespace NLog.Extensions.AzureTableStorage.Tests
     {
         private readonly Logger _logger;
         private readonly CloudTable _cloudTable;
+        private const int TimeOutInMilliseconds = 8000; //8 seconds or fail
 
         public AzureTableStorageTargetTests()
         {
-            _logger = LogManager.GetLogger(GetType().ToString());
-            var storageAccount = GetStorageAccount();
-            // Create the table client.
-            var tableClient = storageAccount.CreateCloudTableClient();
-            //create charts table if not exists.
-            _cloudTable = tableClient.GetTableReference("AzureTableStorageTargetTestsLogs");
-            _cloudTable.CreateIfNotExists();
+            try
+            {
+                _logger = LogManager.GetLogger(GetType().ToString());
+                var storageAccount = GetStorageAccount();
+                // Create the table client.
+                var tableClient = storageAccount.CreateCloudTableClient();
+                //create charts table if not exists.
+                _cloudTable = tableClient.GetTableReference("AzureTableStorageTargetTestsLogs");
+                _cloudTable.CreateIfNotExists();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to initialize tests, make sure Azure Storage Emulator is running.", ex);
+            }
+            
         }
-        
 
-        [Fact]
+
+        [Fact(Timeout = TimeOutInMilliseconds)]
         public void CanLogInformation()
         {
             Assert.True(GetLogEntities().Count == 0);
@@ -39,7 +48,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         }
 
 
-        [Fact]
+        [Fact(Timeout = TimeOutInMilliseconds)]
         public void CanLogExeptions()
         {
             Assert.True(GetLogEntities().Count == 0);
@@ -54,7 +63,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         }
 
 
-        [Fact]
+        [Fact(Timeout = TimeOutInMilliseconds)]
         public void IncludeExeptionDetailsInLoggedRow()
         {
             var exception = new NullReferenceException();
@@ -66,7 +75,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
 
-        [Fact]
+        [Fact(Timeout = TimeOutInMilliseconds)]
         public void IncludeInnerExeptionDetailsInLoggedRow()
         {
             var exception = new NullReferenceException("exception messege", new DivideByZeroException());
@@ -80,7 +89,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
 
-        [Fact]
+        [Fact(Timeout = TimeOutInMilliseconds)]
         public void IncludeArgumentsInLoggedRow()
         {
             _logger.Log(LogLevel.Debug, "debug messege", 5);
@@ -91,7 +100,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
 
-        [Fact]
+        [Fact(Timeout = TimeOutInMilliseconds)]
         public void IncludeMultibleArgumentsInLoggedRow()
         {
             _logger.Log(LogLevel.Debug, "debug messege", 5, 4, 5, 5, 6);
@@ -102,7 +111,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
 
-        [Fact]
+        [Fact(Timeout = TimeOutInMilliseconds)]
         public void IncludeArgumentsWithDifferentTypesInLoggedRow()
         {
             _logger.Log(LogLevel.Debug, "debug messege", 5, "Ahmed", false);
