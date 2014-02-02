@@ -8,8 +8,8 @@ For more info about NLog targets and how to use it, refer to <a href="https://gi
 How to use
 ==========
 - Download package from <a href="https://www.nuget.org/packages/AzureTableStorageNLogTarget/">Nuget</a>.
-- Open NLog configurations file ex: ```NLog.config``` and add the following sections:
-
+- If you didn't setup Azure storage connection string yet, follow instructions in <a href="Setup a storage connection string">Setup a storage connection string</a>.
+- Open NLog configurations file ex: ```NLog.config``` and add the following lines:
 - Add ```NLog.Extensions.AzureTableStorage``` assemply to ```extensions``` section:
 `````xml
   <extensions>
