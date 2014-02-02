@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace NLog.Extensions.AzureTableStorage
@@ -16,7 +12,7 @@ namespace NLog.Extensions.AzureTableStorage
             LogTimeStamp = logEvent.TimeStamp.ToString(CultureInfo.InvariantCulture);
             Level = logEvent.Level.Name;
             Message = logEvent.FormattedMessage;
-            LayoutMessage = layoutMessage;
+            MessageWithLayout = layoutMessage;
             if (logEvent.Exception != null)
             {
                 Exception = logEvent.Exception.ToString();
@@ -52,6 +48,6 @@ namespace NLog.Extensions.AzureTableStorage
         public string InnerException { get; set; }
         public string Parameters { get; set; }
         public string StackTrace { get; set; }
-        public string LayoutMessage { get; set; }
+        public string MessageWithLayout { get; set; }
     }
 }
