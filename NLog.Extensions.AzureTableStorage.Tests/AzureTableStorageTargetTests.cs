@@ -90,7 +90,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         {
             // Construct the query operation for all customer entities where PartitionKey="Smith".
             var query = new TableQuery<LogEntity>()
-                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, this.GetType().ToString()));
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, GetType().ToString()));
             var entities = _cloudTable.ExecuteQuery(query);
             return entities.ToList();
         }
