@@ -7,7 +7,7 @@ For more info about NLog targets and how to use it, refer to <a href="https://gi
 
 Download
 ==========
-Download Dll from <a href="https://www.nuget.org/packages/AzureTableStorageNLogTarget/">Nuget</a>
+Download package from <a href="https://www.nuget.org/packages/AzureTableStorageNLogTarget/">Nuget</a>
 
 How to use
 ==========
