@@ -5,6 +5,10 @@ Azure Table Storage Target for NLog
 
 For more info about NLog targets and how to use it, refer to <a href="https://github.com/nlog/NLog/wiki/How%20to%20write%20a%20Target">How To Write a Target</a>
 
+Download
+==========
+Download package from <a href="https://www.nuget.org/packages/AzureTableStorageNLogTarget/">Nuget</a>
+
 How to use
 ==========
 - Download package from <a href="https://www.nuget.org/packages/AzureTableStorageNLogTarget/">Nuget</a>.
@@ -41,4 +45,4 @@ A lot of ways you can access table storage, however using <a href="http://azures
 
 Notes
 =====
-- Before running unit tests on you local machine, make sure Azure Storage Emulator is running.
+- Before running tests on you local machine, make sure Azure Storage Emulator is running.
