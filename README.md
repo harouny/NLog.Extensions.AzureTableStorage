@@ -41,4 +41,4 @@ A lot of ways you can access table storage, however using <a href="http://azures
 
 Notes
 =====
-- Before running unit tests on you local machine, make sure Azure Storage Emulator is running.
+- Before running tests on you local machine, make sure Azure Storage Emulator is running.
