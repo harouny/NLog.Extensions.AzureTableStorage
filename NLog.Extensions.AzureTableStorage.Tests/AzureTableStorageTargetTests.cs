@@ -64,6 +64,16 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
         [Fact(Timeout = TimeOutInMilliseconds)]
+        public void IncludeExeptionFormattedMessegeInLoggedRow()
+        {
+            _logger.Debug("execption messege {0} and {1}.",  2010, 2014);
+            var entity = GetLogEntities().Single();
+            Assert.Equal("execption messege 2010 and 2014.", entity.Message);
+        }
+        
+        
+        
+        [Fact(Timeout = TimeOutInMilliseconds)]
         public void IncludeExeptionDetailsInLoggedRow()
         {
             var exception = new NullReferenceException();
