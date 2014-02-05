@@ -25,13 +25,6 @@ namespace NLog.Extensions.AzureTableStorage
                         InnerException = logEvent.Exception.InnerException.ToString();
                     }
                 }
-                if (logEvent.Parameters != null)
-                {
-                    Parameters = logEvent.Parameters
-                    .Select(o => o.ToString())
-                    .Aggregate((o, o1) => (o == null ? "Null" : o.ToString(CultureInfo.InvariantCulture)) + ", " + (o1 == null ? "Null" : o1.ToString(CultureInfo.InvariantCulture)));
-
-                }
                 if (logEvent.StackTrace != null)
                 {
                     StackTrace = logEvent.StackTrace.ToString();
@@ -52,7 +45,6 @@ namespace NLog.Extensions.AzureTableStorage
         public string Message { get; set; }
         public string Exception { get; set; }
         public string InnerException { get; set; }
-        public string Parameters { get; set; }
         public string StackTrace { get; set; }
         public string MessageWithLayout { get; set; }
     }

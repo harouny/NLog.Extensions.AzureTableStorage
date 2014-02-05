@@ -99,38 +99,6 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
 
-        [Fact(Timeout = TimeOutInMilliseconds)]
-        public void IncludeArgumentsInLoggedRow()
-        {
-            _logger.Log(LogLevel.Debug, "debug messege", 5);
-            var entity = GetLogEntities().Single();
-            Assert.NotNull(entity.Parameters);
-            Assert.Equal("5", entity.Parameters);
-        }
-
-
-
-        [Fact(Timeout = TimeOutInMilliseconds)]
-        public void IncludeMultibleArgumentsInLoggedRow()
-        {
-            _logger.Log(LogLevel.Debug, "debug messege", 5, 4, 5, 5, 6);
-            var entity = GetLogEntities().Single();
-            Assert.NotNull(entity.Parameters);
-            Assert.Equal("5, 4, 5, 5, 6", entity.Parameters);
-        }
-
-
-
-        [Fact(Timeout = TimeOutInMilliseconds)]
-        public void IncludeArgumentsWithDifferentTypesInLoggedRow()
-        {
-            _logger.Log(LogLevel.Debug, "debug messege", 5, "Ahmed", false);
-            var entity = GetLogEntities().Single();
-            Assert.NotNull(entity.Parameters);
-            Assert.Equal("5, Ahmed, " + false, entity.Parameters);
-        }
-
-
 
         private string GetStorageAccountConnectionString()
         {
