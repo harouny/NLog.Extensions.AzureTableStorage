@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using NLog.Config;
+using NLog.Targets;
 using Xunit;
 
 namespace NLog.Extensions.AzureTableStorage.Tests
@@ -96,8 +99,6 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             Assert.NotNull(entity.InnerException);
             Assert.Equal(exception.InnerException.ToString().ExceptBlanks(), entity.InnerException.ExceptBlanks());
         }
-
-
 
 
         private string GetStorageAccountConnectionString()

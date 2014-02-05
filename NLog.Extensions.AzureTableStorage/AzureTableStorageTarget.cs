@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using NLog.Targets;
 
 namespace NLog.Extensions.AzureTableStorage
@@ -18,13 +19,34 @@ namespace NLog.Extensions.AzureTableStorage
         protected override void InitializeTarget()
         {
             base.InitializeTarget();
+            ValidateParameters();
             _tableStorageManager = new TableStorageManager(ConnectionStringKey, TableName);
+        }
+
+        private void ValidateParameters()
+        {
+            IsNameValidForTableStorage(TableName);
+        }
+
+        private void IsNameValidForTableStorage(string tableName)
+        {
+            var validator = new AzureStorageTableNameValidator(tableName);
+            if (!validator.IsValid())
+            {
+                throw new NotSupportedException(tableName + " is not a valid name for Azure storage table name.")
+                {
+                    HelpLink = "http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx"
+                };
+            }
         }
 
         protected override void Write(LogEventInfo logEvent)
         {
-            var layoutMessage = Layout.Render(logEvent);
-            _tableStorageManager.Add(new LogEntity(logEvent, layoutMessage));
+            if (_tableStorageManager != null)
+            {
+                var layoutMessage = Layout.Render(logEvent);
+                _tableStorageManager.Add(new LogEntity(logEvent, layoutMessage));
+            }
         }
 
     }
