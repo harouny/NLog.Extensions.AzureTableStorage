@@ -1,4 +1,4 @@
-NLog Azure Table Storage Target [![Build Status](https://travis-ci.org/harouny/NLog.Extensions.AzureTableStorage.png)](https://travis-ci.org/harouny/NLog.Extensions.AzureTableStorage)
+NLog Azure Table Storage Target 
 ===============================
 
 Azure Table Storage Target for NLog
