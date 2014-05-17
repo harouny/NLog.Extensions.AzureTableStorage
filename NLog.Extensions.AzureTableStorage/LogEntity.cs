@@ -1,5 +1,7 @@
-﻿using System.Globalization;
-using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Globalization;
+using System.Text;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace NLog.Extensions.AzureTableStorage
@@ -20,6 +22,10 @@ namespace NLog.Extensions.AzureTableStorage
                 if (logEvent.Exception != null)
                 {
                     Exception = logEvent.Exception.ToString();
+                    if (logEvent.Exception.Data.Count > 0)
+                    {
+                        ExceptionData = GetExceptionDataAsString(logEvent.Exception);
+                    }
                     if (logEvent.Exception.InnerException != null)
                     {
                         InnerException = logEvent.Exception.InnerException.ToString();
@@ -35,6 +41,16 @@ namespace NLog.Extensions.AzureTableStorage
             
         }
 
+        private static string GetExceptionDataAsString(Exception exception)
+        {
+            var data = new StringBuilder();
+            foreach (DictionaryEntry entry in exception.Data)
+            {
+                data.AppendLine(entry.Key + "=" + entry.Value);
+            }
+            return data.ToString();
+        }
+
         public LogEntity()
         {
         }
@@ -47,5 +63,7 @@ namespace NLog.Extensions.AzureTableStorage
         public string InnerException { get; set; }
         public string StackTrace { get; set; }
         public string MessageWithLayout { get; set; }
+        public string ExceptionData { get; set; }
+
     }
 }

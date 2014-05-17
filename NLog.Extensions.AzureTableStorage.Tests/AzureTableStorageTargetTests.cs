@@ -73,6 +73,21 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             var entity = GetLogEntities().Single();
             Assert.Equal("execption messege 2010 and 2014.", entity.Message);
         }
+
+
+        [Fact(Timeout = TimeOutInMilliseconds)]
+        public void IncludeExeptionDataInLoggedRow()
+        {
+            var exception = new NullReferenceException();
+            var errorId = Guid.NewGuid();
+            exception.Data["id"] = errorId;
+            exception.Data["name"] = "ahmed";
+            _logger.LogException(LogLevel.Error, "execption messege", exception);
+            var entities = GetLogEntities();
+            var entity = entities.Single();
+            Assert.True(entity.ExceptionData.Contains(errorId.ToString()));
+            Assert.True(entity.ExceptionData.Contains("name=ahmed"));
+        }
         
         
         
