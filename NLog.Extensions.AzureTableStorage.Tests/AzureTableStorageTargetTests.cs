@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using NLog.Config;
-using NLog.Targets;
 using Xunit;
 
 namespace NLog.Extensions.AzureTableStorage.Tests
@@ -16,6 +13,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         private readonly Logger _logger;
         private readonly CloudTable _cloudTable;
         private const int TimeOutInMilliseconds = 8000; //8 seconds or fail
+        private const string TargetTableName = "TempAzureTableStorageTargetTestsLogs"; //must match table name in AzureTableStorage target in NLog.config
 
         public AzureTableStorageTargetTests()
         {
@@ -26,7 +24,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
                 // Create the table client.
                 var tableClient = storageAccount.CreateCloudTableClient();
                 //create charts table if not exists.
-                _cloudTable = tableClient.GetTableReference("AzureTableStorageTargetTestsLogs");
+                _cloudTable = tableClient.GetTableReference(TargetTableName);
                 _cloudTable.CreateIfNotExists();
             }
             catch (Exception ex)
@@ -52,14 +50,14 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
         [Fact(Timeout = TimeOutInMilliseconds)]
-        public void CanLogExeptions()
+        public void CanLogExceptions()
         {
             Assert.True(GetLogEntities().Count == 0);
-            _logger.LogException(LogLevel.Error, "execption messege", new NullReferenceException() );
+            _logger.LogException(LogLevel.Error, "exception message", new NullReferenceException());
             var entities = GetLogEntities();
             var entity = entities.Single();
             Assert.True(entities.Count == 1);
-            Assert.Equal("execption messege", entity.Message);
+            Assert.Equal("exception message", entity.Message);
             Assert.Equal("Error", entity.Level);
             Assert.Equal(GetType().ToString(), entity.LoggerName);
             Assert.NotNull(entity.Exception);
@@ -67,16 +65,16 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
         [Fact(Timeout = TimeOutInMilliseconds)]
-        public void IncludeExeptionFormattedMessegeInLoggedRow()
+        public void IncludeExceptionFormattedMessengerInLoggedRow()
         {
-            _logger.Debug("execption messege {0} and {1}.",  2010, 2014);
+            _logger.Debug("exception message {0} and {1}.", 2010, 2014);
             var entity = GetLogEntities().Single();
-            Assert.Equal("execption messege 2010 and 2014.", entity.Message);
+            Assert.Equal("exception message 2010 and 2014.", entity.Message);
         }
 
 
         [Fact(Timeout = TimeOutInMilliseconds)]
-        public void IncludeExeptionDataInLoggedRow()
+        public void IncludeExceptionDataInLoggedRow()
         {
             var exception = new NullReferenceException();
             var errorId = Guid.NewGuid();
@@ -92,7 +90,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         
         
         [Fact(Timeout = TimeOutInMilliseconds)]
-        public void IncludeExeptionDetailsInLoggedRow()
+        public void IncludeExceptionDetailsInLoggedRow()
         {
             var exception = new NullReferenceException();
             _logger.LogException(LogLevel.Error, "execption messege", exception);
@@ -104,9 +102,9 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
         [Fact(Timeout = TimeOutInMilliseconds)]
-        public void IncludeInnerExeptionDetailsInLoggedRow()
+        public void IncludeInnerExceptionDetailsInLoggedRow()
         {
-            var exception = new NullReferenceException("exception messege", new DivideByZeroException());
+            var exception = new NullReferenceException("exception message", new DivideByZeroException());
             _logger.LogException(LogLevel.Error, "execption messege", exception);
             var entity = GetLogEntities().Single();
             Assert.NotNull(entity.Exception);
