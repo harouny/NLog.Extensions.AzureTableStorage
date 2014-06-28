@@ -8,17 +8,15 @@ namespace NLog.Extensions.AzureTableStorage
     {
         private readonly CloudTable _cloudTable;
         private readonly string _connectionStringKey;
-        private readonly string _tableName;
 
         public TableStorageManager(string connectionStringKey, string tableName)
         {
             _connectionStringKey = connectionStringKey;
-            _tableName = tableName;
             var storageAccount = GetStorageAccount();
             // Create the table client.
             var tableClient = storageAccount.CreateCloudTableClient();
             //create charts table if not exists.
-            _cloudTable = tableClient.GetTableReference(_tableName);
+            _cloudTable = tableClient.GetTableReference(tableName);
             _cloudTable.CreateIfNotExists();
         }
 

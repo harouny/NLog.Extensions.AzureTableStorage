@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace NLog.Extensions.AzureTableStorage
 {
-    //validation rules descriped in: http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
+    //validation rules described in: http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
     public class AzureStorageTableNameValidator
     {
         private readonly string _tableName;
