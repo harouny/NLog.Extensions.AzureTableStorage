@@ -53,7 +53,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         public void CanLogExceptions()
         {
             Assert.True(GetLogEntities().Count == 0);
-            _logger.LogException(LogLevel.Error, "exception message", new NullReferenceException());
+            _logger.Log(LogLevel.Error, "exception message", (Exception)new NullReferenceException());
             var entities = GetLogEntities();
             var entity = entities.Single();
             Assert.True(entities.Count == 1);
@@ -80,7 +80,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             var errorId = Guid.NewGuid();
             exception.Data["id"] = errorId;
             exception.Data["name"] = "ahmed";
-            _logger.LogException(LogLevel.Error, "execption messege", exception);
+            _logger.Log(LogLevel.Error, "execption messege", (Exception)exception);
             var entities = GetLogEntities();
             var entity = entities.Single();
             Assert.True(entity.ExceptionData.Contains(errorId.ToString()));
@@ -93,7 +93,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         public void IncludeExceptionDetailsInLoggedRow()
         {
             var exception = new NullReferenceException();
-            _logger.LogException(LogLevel.Error, "execption messege", exception);
+            _logger.Log(LogLevel.Error, "execption messege", (Exception)exception);
             var entity = GetLogEntities().Single();
             Assert.NotNull(entity.Exception);
             Assert.Equal(exception.ToString().ExceptBlanks(), entity.Exception.ExceptBlanks());
@@ -105,7 +105,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         public void IncludeInnerExceptionDetailsInLoggedRow()
         {
             var exception = new NullReferenceException("exception message", new DivideByZeroException());
-            _logger.LogException(LogLevel.Error, "execption messege", exception);
+            _logger.Log(LogLevel.Error, "execption messege", (Exception)exception);
             var entity = GetLogEntities().Single();
             Assert.NotNull(entity.Exception);
             Assert.Equal(exception.ToString().ExceptBlanks(), entity.Exception.ExceptBlanks());
