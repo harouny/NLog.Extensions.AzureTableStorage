@@ -12,7 +12,7 @@ Download package from <a href="https://www.nuget.org/packages/AzureTableStorageN
 How to use
 ==========
 - Download package from <a href="https://www.nuget.org/packages/AzureTableStorageNLogTarget/">Nuget</a>.
-- If you didn't setup Azure storage connection string yet, follow instructions in <a href="Setup a storage connection string">Setup a storage connection string</a>.
+- If you didn't setup Azure storage connection string yet, follow instructions in <a href="http://msdn.microsoft.com/en-us/library/azure/ee758697.aspx">Setup a storage connection string</a>.
 - Open NLog configurations file ex: ```NLog.config``` and add the following lines:
 - Add ```NLog.Extensions.AzureTableStorage``` assemply to ```extensions``` section:
 `````xml
