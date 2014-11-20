@@ -23,7 +23,7 @@ namespace NLog.Extensions.AzureTableStorage
 
         private string GetStorageAccountConnectionString()
         {
-            //try get connection string from app settings or could service config
+            //try get connection string from app settings or cloud service config
             var connectionStringValue = CloudConfigurationManager.GetSetting(_connectionStringKey);
             if (!string.IsNullOrEmpty(connectionStringValue)) return connectionStringValue;
             

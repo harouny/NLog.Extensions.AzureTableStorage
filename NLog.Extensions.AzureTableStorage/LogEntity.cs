@@ -10,7 +10,7 @@ namespace NLog.Extensions.AzureTableStorage
     {
         private readonly object _syncRoot = new object();
 
-        public LogEntity(LogEventInfo logEvent, string layoutMessage)
+        public LogEntity(string partitionKeyPrefix, LogEventInfo logEvent, string layoutMessage)
         {
             lock (_syncRoot)
             {
@@ -36,9 +36,11 @@ namespace NLog.Extensions.AzureTableStorage
                     StackTrace = logEvent.StackTrace.ToString();
                 }
                 RowKey = logEvent.TimeStamp.Ticks.ToString(CultureInfo.InvariantCulture);
-                PartitionKey = LoggerName;
+                PartitionKey = !string.IsNullOrWhiteSpace(partitionKeyPrefix)
+                                ? partitionKeyPrefix + "." + LoggerName
+                                : LoggerName;
             }
-            
+
         }
 
         private static string GetExceptionDataAsString(Exception exception)
