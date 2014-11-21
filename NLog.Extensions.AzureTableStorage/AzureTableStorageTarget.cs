@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
-using Microsoft.WindowsAzure;
 using NLog.Targets;
 
 namespace NLog.Extensions.AzureTableStorage
@@ -9,6 +7,7 @@ namespace NLog.Extensions.AzureTableStorage
     [Target("AzureTableStorage")]
     public class AzureTableStorageTarget : TargetWithLayout
     {
+        private ConfigManager _configManager;
         private TableStorageManager _tableStorageManager;
 
         [Required]
@@ -24,10 +23,11 @@ namespace NLog.Extensions.AzureTableStorage
         {
             base.InitializeTarget();
             ValidateParameters();
-            _tableStorageManager = new TableStorageManager(ConnectionStringKey, TableName);
+            _configManager = new ConfigManager(ConnectionStringKey);
+            _tableStorageManager = new TableStorageManager(_configManager, TableName);
 
             if (!string.IsNullOrWhiteSpace(PartitionKeyPrefixKey))
-                PartitionKeyPrefix = GetStorageAccountPartitionKeyPrefix();
+                PartitionKeyPrefix = _configManager.GetSettingByKey(PartitionKeyPrefixKey);
         }
 
         private void ValidateParameters()
@@ -47,24 +47,13 @@ namespace NLog.Extensions.AzureTableStorage
             }
         }
 
-        protected override void Write( LogEventInfo logEvent)
+        protected override void Write(LogEventInfo logEvent)
         {
             if (_tableStorageManager != null)
             {
                 var layoutMessage = Layout.Render(logEvent);
                 _tableStorageManager.Add(new LogEntity(PartitionKeyPrefix, logEvent, layoutMessage));
             }
-        }
-
-        private string GetStorageAccountPartitionKeyPrefix()
-        {
-            //try get string from app settings or cloudd service config
-            var partitionKeyPrefixValue = CloudConfigurationManager.GetSetting(PartitionKeyPrefixKey);
-            if (!string.IsNullOrEmpty(partitionKeyPrefixValue)) return partitionKeyPrefixValue;
-
-            //try get connection string from ConfigurationManager.AppSettings
-            var appSetting = ConfigurationManager.AppSettings[PartitionKeyPrefixKey];
-            return appSetting;
         }
     }
 }
