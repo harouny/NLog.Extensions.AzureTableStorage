@@ -31,20 +31,13 @@ namespace NLog.Extensions.AzureTableStorage
         public CloudStorageAccount GetStorageAccount()
         {
             var connectionString = GetStorageAccountConnectionString();
-            var storageAccount = CloudStorageAccount.Parse(connectionString);
-            return storageAccount;
+            return CloudStorageAccount.Parse(connectionString);
         }
 
-        public string GetSettingByKey(string partitionKeyPrefixKey)
+        public string GetSettingByKey(string key)
         {
-            //try get string from app settings or cloudd service config
-            var partitionKeyPrefixValue = CloudConfigurationManager.GetSetting(partitionKeyPrefixKey);
-            if (!string.IsNullOrEmpty(partitionKeyPrefixValue))
-                return partitionKeyPrefixValue;
-
-            //try get connection string from ConfigurationManager.AppSettings
-            var appSetting = ConfigurationManager.AppSettings[partitionKeyPrefixKey];
-            return appSetting;
+            //try get string from app settings or cloud service config
+           return CloudConfigurationManager.GetSetting(key);
         }
     }
 }

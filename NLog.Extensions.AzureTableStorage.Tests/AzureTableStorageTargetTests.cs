@@ -114,6 +114,37 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         }
 
 
+        [Fact(Timeout = TimeOutInMilliseconds)]
+        public void IncludePartitionKeyPrefix()
+        {
+            var exception = new NullReferenceException();
+            _logger.Log(LogLevel.Error, "execption messege", (Exception)exception);
+            var entity = GetLogEntities().Single();
+            Assert.True(entity.PartitionKey.Contains("customPrefix"));
+        }
+
+
+        [Fact(Timeout = TimeOutInMilliseconds)]
+        public void IncludeMachineName()
+        {
+            var exception = new NullReferenceException();
+            _logger.Log(LogLevel.Error, "execption messege", (Exception)exception);
+            var entity = GetLogEntities().Single();
+            Assert.Equal(entity.MachineName, Environment.MachineName);
+        }
+
+
+        [Fact(Timeout = TimeOutInMilliseconds)]
+        public void IncludeRowKeyAsGuid()
+        {
+            var exception = new NullReferenceException();
+            _logger.Log(LogLevel.Error, "execption messege", (Exception)exception);
+            var entity = GetLogEntities().Single();
+            Assert.True(Guid.Parse(entity.RowKey) != null);
+        }
+
+
+
         private string GetStorageAccountConnectionString()
         {
             return CloudConfigurationManager.GetSetting("StorageAccountConnectionString");
@@ -128,7 +159,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         {
             // Construct the query operation for all customer entities where PartitionKey="Smith".
             var query = new TableQuery<LogEntity>()
-                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, GetType().ToString()));
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "customPrefix." + GetType()));
             var entities = _cloudTable.ExecuteQuery(query);
             return entities.ToList();
         }
