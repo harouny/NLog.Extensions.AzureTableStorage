@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Globalization;
 using System.Text;
 using Microsoft.WindowsAzure.Storage.Table;
 
@@ -35,11 +34,11 @@ namespace NLog.Extensions.AzureTableStorage
                 {
                     StackTrace = logEvent.StackTrace.ToString();
                 }
-                RowKey = logEvent.TimeStamp.Ticks.ToString(CultureInfo.InvariantCulture);
-                var loggerInfo = !string.IsNullOrWhiteSpace(partitionKeyPrefix)
+                RowKey = Guid.NewGuid().ToString();
+                PartitionKey = !string.IsNullOrWhiteSpace(partitionKeyPrefix)
                                 ? partitionKeyPrefix + "." + LoggerName
                                 : LoggerName;
-                PartitionKey = String.Format("{0}__{1}__{2}", Environment.MachineName, loggerInfo, Guid.NewGuid());
+                MachineName = Environment.MachineName;
             }
 
         }
@@ -67,6 +66,6 @@ namespace NLog.Extensions.AzureTableStorage
         public string StackTrace { get; set; }
         public string MessageWithLayout { get; set; }
         public string ExceptionData { get; set; }
-
+        public string MachineName { get; set; }
     }
 }
