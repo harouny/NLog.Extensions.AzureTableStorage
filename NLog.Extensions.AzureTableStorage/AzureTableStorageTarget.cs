@@ -7,20 +7,27 @@ namespace NLog.Extensions.AzureTableStorage
     [Target("AzureTableStorage")]
     public class AzureTableStorageTarget : TargetWithLayout
     {
+        private ConfigManager _configManager;
         private TableStorageManager _tableStorageManager;
-        
-        [Required] 
+
+        [Required]
         public string ConnectionStringKey { get; set; }
-        
+
         [Required]
         public string TableName { get; set; }
 
+        public string PartitionKeyPrefix { get; set; }
+        public string PartitionKeyPrefixKey { get; set; }
 
         protected override void InitializeTarget()
         {
             base.InitializeTarget();
             ValidateParameters();
-            _tableStorageManager = new TableStorageManager(ConnectionStringKey, TableName);
+            _configManager = new ConfigManager(ConnectionStringKey);
+            _tableStorageManager = new TableStorageManager(_configManager, TableName);
+
+            if (!string.IsNullOrWhiteSpace(PartitionKeyPrefixKey))
+                PartitionKeyPrefix = _configManager.GetSettingByKey(PartitionKeyPrefixKey);
         }
 
         private void ValidateParameters()
@@ -45,9 +52,8 @@ namespace NLog.Extensions.AzureTableStorage
             if (_tableStorageManager != null)
             {
                 var layoutMessage = Layout.Render(logEvent);
-                _tableStorageManager.Add(new LogEntity(logEvent, layoutMessage));
+                _tableStorageManager.Add(new LogEntity(PartitionKeyPrefix, logEvent, layoutMessage));
             }
         }
-
     }
 }
