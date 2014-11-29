@@ -34,7 +34,7 @@ namespace NLog.Extensions.AzureTableStorage
                 {
                     StackTrace = logEvent.StackTrace.ToString();
                 }
-                RowKey = Guid.NewGuid().ToString();
+                RowKey = String.Format("{0}__{1}", (DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks).ToString("d19"), Guid.NewGuid());
                 PartitionKey = !string.IsNullOrWhiteSpace(partitionKeyPrefix)
                                 ? partitionKeyPrefix + "." + LoggerName
                                 : LoggerName;
