@@ -46,7 +46,9 @@ Note: You can also configure this by code refer to <a href="https://github.com/n
 
 How to View Logs?
 =================
-A lot of ways you can access table storage, however using <a href="http://azurestorageexplorer.codeplex.com/">Azure Storage Explorer</a> is more than enough to view logs.
+A lot of ways you can access table storage.
+- <a href="http://www.cloudportam.com/">Cloud Portam</a>
+- <a href="http://azurestorageexplorer.codeplex.com/">Azure Storage Explorer</a>
 
 Notes
 =====
