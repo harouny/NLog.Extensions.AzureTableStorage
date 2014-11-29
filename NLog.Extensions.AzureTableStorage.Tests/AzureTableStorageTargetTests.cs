@@ -135,12 +135,19 @@ namespace NLog.Extensions.AzureTableStorage.Tests
 
 
         [Fact(Timeout = TimeOutInMilliseconds)]
-        public void IncludeRowKeyAsGuid()
+        public void IncludeGuidAndTimeComponentInRowKey()
         {
             var exception = new NullReferenceException();
             _logger.Log(LogLevel.Error, "execption messege", (Exception)exception);
             var entity = GetLogEntities().Single();
-            Assert.True(Guid.Parse(entity.RowKey) != null);
+            const string splitter = "__";
+            Assert.True(entity.RowKey.Contains(splitter));
+            var splitterArray = "__".ToCharArray();
+            var segments = entity.RowKey.Split(splitterArray, StringSplitOptions.RemoveEmptyEntries);
+            Guid globalId;
+            long timeComponent;
+            Assert.True(Guid.TryParse(segments[1], out globalId));
+            Assert.True(long.TryParse(segments[0], out timeComponent));
         }
 
 
