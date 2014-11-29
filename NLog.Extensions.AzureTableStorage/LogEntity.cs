@@ -36,9 +36,10 @@ namespace NLog.Extensions.AzureTableStorage
                     StackTrace = logEvent.StackTrace.ToString();
                 }
                 RowKey = logEvent.TimeStamp.Ticks.ToString(CultureInfo.InvariantCulture);
-                PartitionKey = !string.IsNullOrWhiteSpace(partitionKeyPrefix)
+                var loggerInfo = !string.IsNullOrWhiteSpace(partitionKeyPrefix)
                                 ? partitionKeyPrefix + "." + LoggerName
                                 : LoggerName;
+                PartitionKey = String.Format("{0}__{1}__{2}", Environment.MachineName, loggerInfo, Guid.NewGuid());
             }
 
         }
