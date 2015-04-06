@@ -1,6 +1,6 @@
-﻿using System.Configuration;
-using Microsoft.WindowsAzure;
+﻿using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
+using System.Configuration;
 
 namespace NLog.Extensions.AzureTableStorage
 {

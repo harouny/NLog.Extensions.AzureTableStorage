@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.WindowsAzure;
+﻿using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace NLog.Extensions.AzureTableStorage.Tests
@@ -12,7 +12,6 @@ namespace NLog.Extensions.AzureTableStorage.Tests
     {
         private readonly Logger _logger;
         private readonly CloudTable _cloudTable;
-        private const int TimeOutInMilliseconds = 8000; //8 seconds or fail
         private const string TargetTableName = "TempAzureTableStorageTargetTestsLogs"; //must match table name in AzureTableStorage target in NLog.config
 
         public AzureTableStorageTargetTests()
@@ -34,8 +33,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             
         }
 
-
-        [Fact(Timeout = TimeOutInMilliseconds)]
+        [Fact]
         public void CanLogInformation()
         {
             Assert.True(GetLogEntities().Count == 0);
@@ -48,8 +46,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             Assert.Equal(GetType().ToString(), entity.LoggerName);
         }
 
-
-        [Fact(Timeout = TimeOutInMilliseconds)]
+        [Fact]
         public void CanLogExceptions()
         {
             Assert.True(GetLogEntities().Count == 0);
@@ -63,8 +60,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             Assert.NotNull(entity.Exception);
         }
 
-
-        [Fact(Timeout = TimeOutInMilliseconds)]
+        [Fact]
         public void IncludeExceptionFormattedMessengerInLoggedRow()
         {
             _logger.Debug("exception message {0} and {1}.", 2010, 2014);
@@ -72,8 +68,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             Assert.Equal("exception message 2010 and 2014.", entity.Message);
         }
 
-
-        [Fact(Timeout = TimeOutInMilliseconds)]
+        [Fact]
         public void IncludeExceptionDataInLoggedRow()
         {
             var exception = new NullReferenceException();
@@ -86,10 +81,9 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             Assert.True(entity.ExceptionData.Contains(errorId.ToString()));
             Assert.True(entity.ExceptionData.Contains("name=ahmed"));
         }
-        
-        
-        
-        [Fact(Timeout = TimeOutInMilliseconds)]
+
+
+        [Fact]
         public void IncludeExceptionDetailsInLoggedRow()
         {
             var exception = new NullReferenceException();
@@ -100,8 +94,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         }
 
 
-
-        [Fact(Timeout = TimeOutInMilliseconds)]
+        [Fact]
         public void IncludeInnerExceptionDetailsInLoggedRow()
         {
             var exception = new NullReferenceException("exception message", new DivideByZeroException());
@@ -113,8 +106,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             Assert.Equal(exception.InnerException.ToString().ExceptBlanks(), entity.InnerException.ExceptBlanks());
         }
 
-
-        [Fact(Timeout = TimeOutInMilliseconds)]
+        [Fact]
         public void IncludePartitionKeyPrefix()
         {
             var exception = new NullReferenceException();
@@ -123,8 +115,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             Assert.True(entity.PartitionKey.Contains("customPrefix"));
         }
 
-
-        [Fact(Timeout = TimeOutInMilliseconds)]
+        [Fact]
         public void IncludeMachineName()
         {
             var exception = new NullReferenceException();
@@ -133,8 +124,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             Assert.Equal(entity.MachineName, Environment.MachineName);
         }
 
-
-        [Fact(Timeout = TimeOutInMilliseconds)]
+        [Fact]
         public void IncludeGuidAndTimeComponentInRowKey()
         {
             var exception = new NullReferenceException();
