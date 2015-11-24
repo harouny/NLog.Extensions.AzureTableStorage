@@ -1,7 +1,6 @@
 ﻿{
   "version": "1.0.0-*",
   "description": "NLog.Extensions.AzureTableStorage Class Library",
-  "authors": [ "greenliff.com" ],
   "tags": [ "" ],
   "projectUrl": "",
   "licenseUrl": "",
