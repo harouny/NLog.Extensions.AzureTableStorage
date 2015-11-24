@@ -124,6 +124,14 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         }
 
         [Fact]
+        public void LogTimestampIsFormatted()
+        {
+            _logger.Log(LogLevel.Trace, "this entity's log timestamp should include .000 for milliseconds");
+            var entity = GetLogEntities().Single();
+            Assert.True(entity.LogTimeStamp.EndsWith(".000"));
+        }
+
+        [Fact]
         public void IncludeMachineName()
         {
             var exception = new NullReferenceException();

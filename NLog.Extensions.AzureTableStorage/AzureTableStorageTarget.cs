@@ -20,6 +20,8 @@ namespace NLog.Extensions.AzureTableStorage
         public string PartitionKeyPrefixKey { get; set; }
         public string PartitionKeyPrefixDateFormat { get; set; }
 
+        public string LogTimestampFormatString { get; set; }
+
         protected override void InitializeTarget()
         {
             base.InitializeTarget();
@@ -61,7 +63,15 @@ namespace NLog.Extensions.AzureTableStorage
             if (_tableStorageManager != null)
             {
                 var layoutMessage = Layout.Render(logEvent);
-                _tableStorageManager.Add(new LogEntity(PartitionKeyPrefix, logEvent, layoutMessage));
+
+                if (string.IsNullOrEmpty(LogTimestampFormatString))
+                {
+                    _tableStorageManager.Add(new LogEntity(PartitionKeyPrefix, logEvent, layoutMessage));
+                }
+                else
+                {
+                    _tableStorageManager.Add(new LogEntity(PartitionKeyPrefix, logEvent, layoutMessage, LogTimestampFormatString));
+                }
             }
         }
     }
