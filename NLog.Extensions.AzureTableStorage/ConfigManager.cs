@@ -1,6 +1,5 @@
 ﻿using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
-using System.Configuration;
 
 namespace NLog.Extensions.AzureTableStorage
 {
@@ -17,14 +16,12 @@ namespace NLog.Extensions.AzureTableStorage
         {
             //try get connection string from app settings or cloud service config
             var connectionStringValue = CloudConfigurationManager.GetSetting(_connectionStringKey);
-            if (!string.IsNullOrEmpty(connectionStringValue)) return connectionStringValue;
-
-            //try get connection string from ConfigurationManager.ConnectionStrings
-            var connectionString = ConfigurationManager.ConnectionStrings[_connectionStringKey];
-            if (connectionString != null)
+            if (string.IsNullOrEmpty(connectionStringValue))
             {
-                connectionStringValue = connectionString.ConnectionString;
+                //try get connection string from configured AtsOptions
+                connectionStringValue = AtsOptions.Instance.StorageAccountConnectionString;
             }
+
             return connectionStringValue;
         }
 

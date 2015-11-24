@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{625E4C17-5831-4FF2-914C-C3E326941B87}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3EF3BC13-E023-45DC-959A-6A6C0F97C744}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+		NuGet.Config = NuGet.Config
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NLog.Extensions.AzureTableStorage", "NLog.Extensions.AzureTableStorage\NLog.Extensions.AzureTableStorage.xproj", "{F27F5ACA-07BD-486D-818C-CC5B26D3446B}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NLog.Extensions.AzureTableStorage.Tests", "NLog.Extensions.AzureTableStorage.Tests\NLog.Extensions.AzureTableStorage.Tests.xproj", "{2F71836F-3707-4779-829E-BA7F474FFF86}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NLog.Extensions.AzureTableStorage.EmptyApplication", "NLog.Extensions.AzureTableStorage.EmptyApplication\NLog.Extensions.AzureTableStorage.EmptyApplication.xproj", "{87D6BDF5-8313-45BE-90CE-D0F8F15C44A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F27F5ACA-07BD-486D-818C-CC5B26D3446B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F27F5ACA-07BD-486D-818C-CC5B26D3446B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F27F5ACA-07BD-486D-818C-CC5B26D3446B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F27F5ACA-07BD-486D-818C-CC5B26D3446B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F71836F-3707-4779-829E-BA7F474FFF86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F71836F-3707-4779-829E-BA7F474FFF86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F71836F-3707-4779-829E-BA7F474FFF86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F71836F-3707-4779-829E-BA7F474FFF86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87D6BDF5-8313-45BE-90CE-D0F8F15C44A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87D6BDF5-8313-45BE-90CE-D0F8F15C44A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87D6BDF5-8313-45BE-90CE-D0F8F15C44A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87D6BDF5-8313-45BE-90CE-D0F8F15C44A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F27F5ACA-07BD-486D-818C-CC5B26D3446B} = {625E4C17-5831-4FF2-914C-C3E326941B87}
+		{2F71836F-3707-4779-829E-BA7F474FFF86} = {625E4C17-5831-4FF2-914C-C3E326941B87}
+		{87D6BDF5-8313-45BE-90CE-D0F8F15C44A9} = {625E4C17-5831-4FF2-914C-C3E326941B87}
+	EndGlobalSection
+EndGlobal

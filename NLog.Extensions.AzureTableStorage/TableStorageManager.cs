@@ -13,13 +13,13 @@ namespace NLog.Extensions.AzureTableStorage
             var tableClient = storageAccount.CreateCloudTableClient();
             //create charts table if not exists.
             _cloudTable = tableClient.GetTableReference(tableName);
-            _cloudTable.CreateIfNotExists();
+            _cloudTable.CreateIfNotExistsAsync().Wait();
         }
 
         public void Add(LogEntity entity)
         {
             var insertOperation = TableOperation.Insert(entity);
-            _cloudTable.Execute(insertOperation);
+            _cloudTable.ExecuteAsync(insertOperation).Wait(); ;
         }
     }
 }
