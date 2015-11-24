@@ -18,6 +18,7 @@ namespace NLog.Extensions.AzureTableStorage
 
         public string PartitionKeyPrefix { get; set; }
         public string PartitionKeyPrefixKey { get; set; }
+        public string PartitionKeyPrefixDateFormat { get; set; }
 
         protected override void InitializeTarget()
         {
@@ -26,8 +27,16 @@ namespace NLog.Extensions.AzureTableStorage
             _configManager = new ConfigManager(ConnectionStringKey);
             _tableStorageManager = new TableStorageManager(_configManager, TableName);
 
+            // use PartitionKeyPrefixKey if present
             if (!string.IsNullOrWhiteSpace(PartitionKeyPrefixKey))
+            {
                 PartitionKeyPrefix = _configManager.GetSettingByKey(PartitionKeyPrefixKey);
+            }
+            // else use PartitionKeyPrefixDateFormat if available
+            else if (!string.IsNullOrWhiteSpace(PartitionKeyPrefixDateFormat))
+            {
+                PartitionKeyPrefix = DateTime.UtcNow.ToString(PartitionKeyPrefixDateFormat);
+            }
         }
 
         private void ValidateParameters()

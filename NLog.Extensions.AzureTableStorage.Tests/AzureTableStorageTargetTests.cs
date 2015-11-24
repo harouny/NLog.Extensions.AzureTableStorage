@@ -116,6 +116,14 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         }
 
         [Fact]
+        public void IncludePartitionKeyDatePrefix()
+        {
+            _logger.Log(LogLevel.Trace, "this entity's partition key should be prefixed with a date");
+            var entity = GetLogEntities().Single();
+            Assert.True(entity.PartitionKey.StartsWith(DateTime.Now.ToString("yyyy-MM-dd")));
+        }
+
+        [Fact]
         public void IncludeMachineName()
         {
             var exception = new NullReferenceException();
@@ -155,8 +163,8 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         private List<LogEntity> GetLogEntities()
         {
             // Construct the query operation for all customer entities where PartitionKey="Smith".
-            var query = new TableQuery<LogEntity>()
-                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "customPrefix." + GetType()));
+            var query = new TableQuery<LogEntity>();
+               // .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "customPrefix." + GetType()));
             var entities = _cloudTable.ExecuteQuery(query);
             return entities.ToList();
         }
