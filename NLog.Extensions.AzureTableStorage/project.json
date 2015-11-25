@@ -12,7 +12,6 @@
     "Microsoft.Framework.Configuration": "1.0.0-beta8",
     "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
     "Microsoft.WindowsAzure.ConfigurationManager": "3.1.0",
-    "Microsoft.Extensions.NotNullAttribute.Sources": "1.0.0-rc1-15718", 
     "Microsoft.Framework.DependencyInjection": "1.0.0-beta8",
     "Newtonsoft.Json": "7.0.1",
     "NLog": "4.2.1",
