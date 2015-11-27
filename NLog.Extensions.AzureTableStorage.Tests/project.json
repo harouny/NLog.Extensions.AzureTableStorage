@@ -1,0 +1,23 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "NLog.Extensions.AzureTableStorage.Tests Class Library",
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "Microsoft.Extensions.Configuration": "1.0.0-rc1-final-*",
+    "Microsoft.Extensions.OptionsModel": "1.0.0-rc1-final-*",
+    "NLog.Extensions.AzureTableStorage": "",
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204"
+  },
+
+  "frameworks": {
+    "dnx451": { }
+  },
+
+  "commands": {
+    "test": "xunit.runner.dnx"
+  }
+}

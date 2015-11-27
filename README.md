@@ -1,17 +1,26 @@
-NLog Azure Table Storage Target 
-===============================
+NLog Azure Table Storage Target updated by Greenliff
+====================================================
 
 Azure Table Storage Target for NLog
 
 For more info about NLog targets and how to use it, refer to <a href="https://github.com/nlog/NLog/wiki/How%20to%20write%20a%20Target">How To Write a Target</a>
 
-Download
-==========
-Download package from <a href="https://www.nuget.org/packages/AzureTableStorageNLogTarget/">Nuget</a>
+Original source
+===============
+Based on the source available at <a href="https://github.com/harouny/NLog.Extensions.AzureTableStorage">Github</a>
+
+Modifications
+=============
+- Support for ASP.NET 5 RC1
+- Support for NLog 4.2.1
+- Support for WindowsAzure.Storage 6.1.1-preview
+- Note that the latest available package Microsoft.WindowsAzure.ConfigurationManager 3.1.0 does not support DNX Core 5.0
+- app.config has been replaced with appsettings.json, see Startup.cs in project NLog.Extensions.AzureTableStorage.EmptyApplication and AzureTableStorageTargetTests.cs in project NLog.Extensions.AzureTableStorage.Tests
 
 How to use
 ==========
-- Download package from <a href="https://www.nuget.org/packages/AzureTableStorageNLogTarget/">Nuget</a>.
+- There is currently no Nuget package for download available. Add the project NLog.Extensions.AzureTableStorage to your solution. Add the following dependency to your project.json file: "NLog.Extensions.AzureTableStorage": ""
+- Configure your application for logging (appsettings.json, NLog.config, create logger). See sample code in Startup.cs of included project NLog.Extensions.AzureTableStorage.EmptyApplication 
 - If you didn't setup Azure storage connection string yet, follow instructions in <a href="http://msdn.microsoft.com/en-us/library/azure/ee758697.aspx">Setup a storage connection string</a>.
 - Open NLog configurations file ex: ```NLog.config``` and add the following lines:
 - Add ```NLog.Extensions.AzureTableStorage``` assemply to ```extensions``` section:

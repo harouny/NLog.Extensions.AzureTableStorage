@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using NLog.Config;
 using NLog.Targets;
 
 namespace NLog.Extensions.AzureTableStorage
@@ -10,10 +10,10 @@ namespace NLog.Extensions.AzureTableStorage
         private ConfigManager _configManager;
         private TableStorageManager _tableStorageManager;
 
-        [Required]
+        [RequiredParameter]
         public string ConnectionStringKey { get; set; }
 
-        [Required]
+        [RequiredParameter]
         public string TableName { get; set; }
 
         public string PartitionKeyPrefix { get; set; }
