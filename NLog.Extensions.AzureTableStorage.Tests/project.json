@@ -6,11 +6,11 @@
   "licenseUrl": "",
 
   "dependencies": {
-    "Microsoft.Framework.Configuration": "1.0.0-beta8",
-    "Microsoft.Framework.OptionsModel": "1.0.0-beta8-*",
+    "Microsoft.Extensions.Configuration": "1.0.0-rc1-final-*",
+    "Microsoft.Extensions.OptionsModel": "1.0.0-rc1-final-*",
     "NLog.Extensions.AzureTableStorage": "",
-    "xunit": "2.1.0-rc2-build3176",
-    "xunit.runner.dnx": "2.1.0-beta6-build191"
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204"
   },
 
   "frameworks": {

@@ -4,15 +4,16 @@ using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.Dnx.Runtime;
-using Microsoft.Framework.Configuration;
-using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace NLog.Extensions.AzureTableStorage.EmptyApplication
 {
     public class Startup
     {
-        private Microsoft.Framework.Logging.ILogger _log;
+        private Microsoft.Extensions.Logging.ILogger _log;
         private string logConfigurationFile = string.Empty;
 
         public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv)

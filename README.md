@@ -11,7 +11,7 @@ Based on the source available at <a href="https://github.com/harouny/NLog.Extens
 
 Modifications
 =============
-- Support for ASP.NET 5 Beta8
+- Support for ASP.NET 5 RC1
 - Support for NLog 4.2.1
 - Support for WindowsAzure.Storage 6.1.1-preview
 - Note that the latest available package Microsoft.WindowsAzure.ConfigurationManager 3.1.0 does not support DNX Core 5.0
