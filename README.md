@@ -28,13 +28,20 @@ How to use
             ConnectionStringKey="[[connection-string-key]]" 
             TableName="[[table-name]]"
 			PartitionKeyPrefix="[[partition-key-prefix-value]]"
-			PartitionKeyPrefixKey="[[partition-key-prefix-configuration-key]]" />
+			PartitionKeyPrefixKey="[[partition-key-prefix-configuration-key]]" 
+			PartitionKeyPrefixDateFormat="[[datetime-format-value]]"
+			LogTimestampFormatString="[[datetime-format-string]]"
+			/>
   </targets>
 `````
 Where ```[[target-name]]``` is a name you give for the target, ```[[connection-string-key]]``` is the key of Azure Storage Account connection string setting in App Settings or Cloud Service configuration file, and ```[[table-name]]``` is a name you give to the log table that will be created.
 
 If multiple applications need to share the same storage account it is possible to prefix the partition keys used with a custom string.
 ```[[PartitionKeyPrefix]]``` and ```[[PartitionKeyPrefixKey]]``` are optional and ```[[PartitionKeyPrefixKey]]``` has precedence over a hard coded value in ```[[PartitionKeyPrefix]]```. 
+Further, you can use ```[[PartitionKeyPrefixDateFormat]]``` to provide a standard DateTime format string to prefix the partition with, which may result in a better partitioning strategy in some use cases.
+
+Optionally specify a value for ```[[LogTimestampFormatString]]``` to override the default format string of "g" for the LogTimeStamp field.
+
 - Add a rule that uses the target in ```rules``` section.
 `````xml
   <rules>

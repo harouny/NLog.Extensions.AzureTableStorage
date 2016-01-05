@@ -9,12 +9,12 @@ namespace NLog.Extensions.AzureTableStorage
     {
         private readonly object _syncRoot = new object();
 
-        public LogEntity(string partitionKeyPrefix, LogEventInfo logEvent, string layoutMessage)
+        public LogEntity(string partitionKeyPrefix, LogEventInfo logEvent, string layoutMessage, string timestampFormatString = "g")
         {
             lock (_syncRoot)
             {
                 LoggerName = logEvent.LoggerName;
-                LogTimeStamp = logEvent.TimeStamp.ToString("g");
+                LogTimeStamp = logEvent.TimeStamp.ToString(timestampFormatString);
                 Level = logEvent.Level.Name;
                 Message = logEvent.FormattedMessage;
                 MessageWithLayout = layoutMessage;
