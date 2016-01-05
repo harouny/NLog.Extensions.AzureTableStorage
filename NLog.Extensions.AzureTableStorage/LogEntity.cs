@@ -14,7 +14,10 @@ namespace NLog.Extensions.AzureTableStorage
             lock (_syncRoot)
             {
                 LoggerName = logEvent.LoggerName;
-                LogTimeStamp = logEvent.TimeStamp.ToString("g");
+                //logging as UTC time so would be consistant across geo locations
+                //format is not quite UTC as didn't want to lose millisecond precision but it is culturally neutral
+                //it should also allow for predictable parsing when reading this back out of azure storage
+                LogTimeStamp = logEvent.TimeStamp.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss.fff");
                 Level = logEvent.Level.Name;
                 Message = logEvent.FormattedMessage;
                 MessageWithLayout = layoutMessage;
