@@ -16,7 +16,7 @@ namespace NLog.Extensions.AzureTableStorage
             _cloudTable.CreateIfNotExists();
         }
 
-        public void Add(LogEntity entity)
+        public void Add(TableEntity entity)
         {
             var insertOperation = TableOperation.Insert(entity);
             _cloudTable.Execute(insertOperation);
