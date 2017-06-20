@@ -1,3 +1,6 @@
+Note: This project is not actively maintained
+=============================================
+
 NLog Azure Table Storage Target 
 ===============================
 
