@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using NLog.Targets;
+using System.Reflection;
 
 namespace NLog.Extensions.AzureTableStorage
 {
@@ -15,6 +16,8 @@ namespace NLog.Extensions.AzureTableStorage
 
         [Required]
         public string TableName { get; set; }
+
+        public string EntityFactoryType { get; set; }
 
         public string PartitionKeyPrefix { get; set; }
         public string PartitionKeyPrefixKey { get; set; }
@@ -63,6 +66,23 @@ namespace NLog.Extensions.AzureTableStorage
             if (_tableStorageManager != null)
             {
                 var layoutMessage = Layout.Render(logEvent);
+
+                if (!string.IsNullOrEmpty(EntityFactoryType))
+                {
+
+                    
+                    var typeName = EntityFactoryType.Split(',')[0].Trim();
+                    var assemblyName = EntityFactoryType.Split(',')[1].Trim();
+                    var instance = Activator.CreateInstance(assemblyName, typeName);
+
+                    //var assembly = Assembly.Load(assemblyName);
+                    var entityFactory = (IEntityFactory)instance.Unwrap();
+
+                    var entity = entityFactory.Build(logEvent, layoutMessage);
+                    _tableStorageManager.Add(entity);
+
+                    return;
+                }
 
                 if (string.IsNullOrEmpty(LogTimestampFormatString))
                 {

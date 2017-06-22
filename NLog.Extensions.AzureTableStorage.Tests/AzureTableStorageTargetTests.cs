@@ -30,7 +30,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             {
                 throw new Exception("Failed to initialize tests, make sure Azure Storage Emulator is running.", ex);
             }
-            
+
         }
 
         [Fact]
@@ -156,7 +156,22 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             Assert.True(long.TryParse(segments[0], out timeComponent));
         }
 
+        [Fact]
+        public void IncludeCustomEntity()
+        {
+            //Arrange
+            Assert.True(GetLogCustomColumns().Count == 0);
+            var logger = LogManager.GetLogger("customEntity");
 
+            //Act
+            logger.Log(LogLevel.Info, "information");            
+
+            //Assert
+            var entities = GetLogCustomColumns();
+            var entity = entities.Single();
+            Assert.True(entities.Count == 1);
+            Assert.Equal("My Custom Column created", entity.MyCustomColumn);
+        }
 
         private string GetStorageAccountConnectionString()
         {
@@ -172,10 +187,19 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         {
             // Construct the query operation for all customer entities where PartitionKey="Smith".
             var query = new TableQuery<LogEntity>();
-               // .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "customPrefix." + GetType()));
+            // .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "customPrefix." + GetType()));
             var entities = _cloudTable.ExecuteQuery(query);
             return entities.ToList();
         }
+
+        private List<EntityFake> GetLogCustomColumns()
+        {
+            var query = new TableQuery<EntityFake>();
+
+            var entities = _cloudTable.ExecuteQuery(query);
+            return entities.Where(x => !string.IsNullOrWhiteSpace(x.MyCustomColumn)).ToList();
+        }
+
         public void Dispose()
         {
             _cloudTable.DeleteIfExists();
