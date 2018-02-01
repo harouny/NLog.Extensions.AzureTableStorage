@@ -9,7 +9,7 @@ namespace NLog.Extensions.AzureTableStorage
     {
         private readonly object _syncRoot = new object();
 
-        public LogEntity(string partitionKeyPrefix, LogEventInfo logEvent, string layoutMessage, string timestampFormatString = "g")
+        public LogEntity(string partitionKeyPrefix, LogEventInfo logEvent, string layoutMessage, bool removeLoggerName, string timestampFormatString = "g")
         {
             lock (_syncRoot)
             {
@@ -36,8 +36,9 @@ namespace NLog.Extensions.AzureTableStorage
                 }
                 RowKey = String.Format("{0}__{1}", (DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks).ToString("d19"), Guid.NewGuid());
                 PartitionKey = !string.IsNullOrWhiteSpace(partitionKeyPrefix)
-                                ? partitionKeyPrefix + "." + LoggerName
+                                ? removeLoggerName ? partitionKeyPrefix : partitionKeyPrefix + "." + LoggerName
                                 : LoggerName;
+
                 MachineName = Environment.MachineName;
             }
 

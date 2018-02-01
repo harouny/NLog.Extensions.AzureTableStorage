@@ -19,7 +19,7 @@ namespace NLog.Extensions.AzureTableStorage
         public string PartitionKeyPrefix { get; set; }
         public string PartitionKeyPrefixKey { get; set; }
         public string PartitionKeyPrefixDateFormat { get; set; }
-
+        public bool RemoveLoggerName { get; set; }
         public string LogTimestampFormatString { get; set; }
 
         protected override void InitializeTarget()
@@ -66,11 +66,11 @@ namespace NLog.Extensions.AzureTableStorage
 
                 if (string.IsNullOrEmpty(LogTimestampFormatString))
                 {
-                    _tableStorageManager.Add(new LogEntity(PartitionKeyPrefix, logEvent, layoutMessage));
+                    _tableStorageManager.Add(new LogEntity(PartitionKeyPrefix, logEvent, layoutMessage, RemoveLoggerName));
                 }
                 else
                 {
-                    _tableStorageManager.Add(new LogEntity(PartitionKeyPrefix, logEvent, layoutMessage, LogTimestampFormatString));
+                    _tableStorageManager.Add(new LogEntity(PartitionKeyPrefix, logEvent, layoutMessage, RemoveLoggerName, LogTimestampFormatString));
                 }
             }
         }
