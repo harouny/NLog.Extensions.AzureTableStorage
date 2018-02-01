@@ -120,7 +120,7 @@ namespace NLog.Extensions.AzureTableStorage.Tests
         {
             _logger.Log(LogLevel.Trace, "this entity's partition key should be prefixed with a date");
             var entity = GetLogEntities().Single();
-            Assert.True(entity.PartitionKey.StartsWith(DateTime.Now.ToString("yyyy-MM-dd")));
+            Assert.True(entity.PartitionKey.StartsWith(DateTime.UtcNow.ToString("yyyy-MM-dd")));
         }
 
         [Fact]
@@ -156,7 +156,23 @@ namespace NLog.Extensions.AzureTableStorage.Tests
             Assert.True(long.TryParse(segments[0], out timeComponent));
         }
 
+        [Fact]
+        public void ShouldNotRemoveLoggerNameIfNoPrefixIsDefinedEvenWhenItSetToTrue()
+        {
+            var exception = new NullReferenceException();
+            _logger.Log(LogLevel.Trace, "LoggerName", (Exception)exception);
+            var entity = GetLogEntities().Single();
+            Assert.Equal(GetType().ToString(), entity.PartitionKey);
+        }
 
+        [Fact]
+        public void ShouldRemoveLoggerNameIfPrefixIsDefinedAndItSetToTrue()
+        {
+            var exception = new NullReferenceException();
+            _logger.Log(LogLevel.Trace, "PrefixOnly", (Exception)exception);
+            var entity = GetLogEntities().Single();
+            Assert.Equal(DateTime.UtcNow.ToString("yyyy-MM-dd"), entity.PartitionKey);
+        }
 
         private string GetStorageAccountConnectionString()
         {
